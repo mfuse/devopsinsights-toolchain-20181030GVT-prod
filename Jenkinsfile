@@ -15,9 +15,9 @@ pipeline {
        // IBM_CLOUD_DEVOPS_CREDS = credentials('BM_CRED')
         IBM_CLOUD_DEVOPS_API_KEY = credentials('API_KEY')
         IBM_CLOUD_DEVOPS_ORG = 'fuse@jp.ibm.com'
-        IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20170525GVT'
-        IBM_CLOUD_DEVOPS_TOOLCHAIN_ID = '6bc113bb-5331-493c-8da1-45631fc33adf'
-        IBM_CLOUD_DEVOPS_WEBHOOK_URL = 'https://jenkins:f761d3a3-b620-45a6-9e15-d4a52a4eb211:b8e4b101-cacd-4997-bdac-1a62047f7cec@devops-api-integration.stage1.ng.bluemix.net/v1/toolint/messaging/webhook/publish'
+        IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20181011GVT'
+        IBM_CLOUD_DEVOPS_TOOLCHAIN_ID = 'b363c461-8b0c-4370-856e-a1ae5801d5ca'
+        IBM_CLOUD_DEVOPS_WEBHOOK_URL = 'https://jenkins:2a70b0ff-05ea-4ad6-81c7-817271177a09:dcc9fd39-2cac-4caf-b8c9-edc070dd6b1b@devops-api-integration.stage1.ng.bluemix.net/v1/toolint/messaging/webhook/publish'
     }
     tools {
        nodejs 'recent'
@@ -28,7 +28,7 @@ pipeline {
                 // get git commit from Jenkins
                 GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
                 GIT_BRANCH = 'master'
-                GIT_REPO = "https://github.com/mfuse/devopsinsights-toolchain-20170525GVT"
+                GIT_REPO = "https://github.com/mfuse/devopsinsights-toolchain-20181011GVT"
             }
             steps {
                 checkout scm
@@ -61,7 +61,7 @@ pipeline {
         }
                stage('SCM') {
             steps {
-                git 'https://github.com/mfuse/devopsinsights-toolchain-20170525GVT.git'
+                git 'https://github.com/mfuse/devopsinsights-toolchain-20181011GVT.git'
             }
         }
         stage ('SonarQube analysis') {
@@ -74,7 +74,7 @@ pipeline {
 
                         env.SQ_HOSTNAME = SONAR_HOST_URL;
                         env.SQ_AUTHENTICATION_TOKEN = SONAR_AUTH_TOKEN;
-                        env.SQ_PROJECT_KEY = "devopsinsights-toolchain-20170525GVT";
+                        env.SQ_PROJECT_KEY = "devopsinsights-toolchain-20181011GVT";
                        
 
                       sh "${scannerHome}/bin/sonar-scanner \
@@ -108,9 +108,9 @@ pipeline {
                  // post build section to use "publishTestResult" method to publish test result
             post {
                 always {
-                   publishTestResult type:'staticsecurityscan', fileLocation: './tests/saoc/gvt_2018-07-26_12-54-58-ENG.xml'
-                 //   publishTestResult type:'staticsecurityscan', fileLocation: './tests/saoc/IDSInventory.xml'
-                 //   publishTestResult type:'dynamicsecurityscan', fileLocation: './tests/saoc/gvt_2018-07-25_14-56-43.xml'
+                   publishTestResult type:'staticsecurityscan', fileLocation: './tests/asoc/gvt_2018-07-26_12-54-58-ENG.xml'
+                 //   publishTestResult type:'staticsecurityscan', fileLocation: './tests/asoc/IDSInventory.xml'
+                 //   publishTestResult type:'dynamicsecurityscan', fileLocation: './tests/asoc/gvt_2018-07-25_14-56-43.xml'
                 }
             }
         }
