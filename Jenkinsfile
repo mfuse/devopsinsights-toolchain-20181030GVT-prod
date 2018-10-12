@@ -109,9 +109,9 @@ pipeline {
                  // post build section to use "publishTestResult" method to publish test result
             post {
                 always {
-                   publishTestResult type:'staticsecurityscan', fileLocation: './tests/asoc/gvt_2018-07-26_12-54-58-ENG.xml'
+                   publishTestResult type:'staticsecurityscan', fileLocation: './tests/asoc/gvt_2018-07-25_14-52-49.xml'
                  //   publishTestResult type:'staticsecurityscan', fileLocation: './tests/asoc/IDSInventory.xml'
-                 //   publishTestResult type:'dynamicsecurityscan', fileLocation: './tests/asoc/gvt_2018-07-25_14-56-43.xml'
+                   publishTestResult type:'dynamicsecurityscan', fileLocation: './tests/asoc/gvt_2018-07-25_14-56-43.xml'
                 }
             }
         }
