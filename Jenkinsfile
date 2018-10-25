@@ -16,7 +16,7 @@ pipeline {
         IBM_CLOUD_DEVOPS_ENV = 'staging'
         IBM_CLOUD_DEVOPS_API_KEY = credentials('API_KEY')
         IBM_CLOUD_DEVOPS_ORG = 'fuse@jp.ibm.com'
-        IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20181011GVTアプリ①'
+        IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20181011GVTアプリ'
         IBM_CLOUD_DEVOPS_TOOLCHAIN_ID = 'b363c461-8b0c-4370-856e-a1ae5801d5ca'
         IBM_CLOUD_DEVOPS_WEBHOOK_URL = 'https://jenkins:2a70b0ff-05ea-4ad6-81c7-817271177a09:dcc9fd39-2cac-4caf-b8c9-edc070dd6b1b@devops-api-integration.stage1.ng.bluemix.net/v1/toolint/messaging/webhook/publish'
     }
