@@ -125,7 +125,7 @@ pipeline {
                         cf login -u apikey -p $IBM_CLOUD_DEVOPS_API_KEY -o $IBM_CLOUD_DEVOPS_ORG -s ステージング
                         
                         echo "デプロイ中...."
-                  //    export CF_APP_NAME="staging-$IBM_CLOUD_DEVOPS_APP_NAME"
+                     #  export CF_APP_NAME="staging-$IBM_CLOUD_DEVOPS_APP_NAME"
                         export CF_APP_NAME="staging-gvt20181025"                  
                         cf delete $CF_APP_NAME -f
                         cf push $CF_APP_NAME -n $CF_APP_NAME -m 64M -i 1
