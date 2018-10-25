@@ -16,7 +16,7 @@ pipeline {
         IBM_CLOUD_DEVOPS_ENV = 'staging'
         IBM_CLOUD_DEVOPS_API_KEY = credentials('API_KEY')
         IBM_CLOUD_DEVOPS_ORG = 'fuse@jp.ibm.com'
-        IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20181011GVTアプリ'
+        IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20181011GVTアプリ①'
         IBM_CLOUD_DEVOPS_TOOLCHAIN_ID = 'b363c461-8b0c-4370-856e-a1ae5801d5ca'
         IBM_CLOUD_DEVOPS_WEBHOOK_URL = 'https://jenkins:2a70b0ff-05ea-4ad6-81c7-817271177a09:dcc9fd39-2cac-4caf-b8c9-edc070dd6b1b@devops-api-integration.stage1.ng.bluemix.net/v1/toolint/messaging/webhook/publish'
     }
@@ -125,7 +125,8 @@ pipeline {
                         cf login -u apikey -p $IBM_CLOUD_DEVOPS_API_KEY -o $IBM_CLOUD_DEVOPS_ORG -s ステージング
                         
                         echo "デプロイ中...."
-                        export CF_APP_NAME="staging-$IBM_CLOUD_DEVOPS_APP_NAME"
+                  //    export CF_APP_NAME="staging-$IBM_CLOUD_DEVOPS_APP_NAME"
+                        export CF_APP_NAME="staging-gvt20181025"                  
                         cf delete $CF_APP_NAME -f
                         cf push $CF_APP_NAME -n $CF_APP_NAME -m 64M -i 1
 
@@ -138,14 +139,17 @@ pipeline {
             // post build section to use "publishDeployRecord" method to publish deploy record and notify OTC of stage status
             post {
                 success {
-                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net", result:"SUCCESS"
+            //        publishDeployRecord environment: "STAGING", appUrl: "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net", result:"SUCCESS"
+                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-gvt20181025.stage1.mybluemix.net", result:"SUCCESS"
                     // use "notifyOTC" method to notify otc of stage status
 //                  notifyOTC stageName: "ステージングにデプロイ", status: "SUCCESS"
 //                  notifyOTC stageName: "ステージングにデプロイ", status: "成功 😊"
 
                 }
                 failure {
-                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net", result:"FAIL"
+               //     publishDeployRecord environment: "STAGING", appUrl: "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net", result:"FAIL"
+                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-gvt20181025.stage1.mybluemix.net", result:"FAIL"
+                    
                     // use "notifyOTC" method to notify otc of stage status
             //      notifyOTC stageName: "ステージングにデプロイ", status: "FAIL"
             //        notifyOTC stageName: "ステージングにデプロイ", status: "失敗 😢"
@@ -155,7 +159,8 @@ pipeline {
         stage('FVT') {
             //set the APP_URL as the environment variable for the fvt 
             environment {
-                APP_URL = "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net"
+              //  APP_URL = "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net"
+                APP_URL = "http://staging-$gvt20181025.stage1.mybluemix.net"
             }
             steps {
                 sh 'grunt fvt-test --no-color -f'
