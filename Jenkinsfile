@@ -160,7 +160,7 @@ pipeline {
             //set the APP_URL as the environment variable for the fvt 
             environment {
               //  APP_URL = "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net"
-                APP_URL = "http://staging-$gvt20181025.stage1.mybluemix.net"
+                APP_URL = "http://staging-gvt20181025.stage1.mybluemix.net"
             }
             steps {
                 sh 'grunt fvt-test --no-color -f'
