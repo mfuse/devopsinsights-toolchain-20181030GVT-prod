@@ -13,12 +13,12 @@ pipeline {
     environment {
         // You need to specify 4 required environment variables first, they are going to be used for the following IBM Cloud DevOps steps
        // IBM_CLOUD_DEVOPS_CREDS = credentials('BM_CRED')
-        IBM_CLOUD_DEVOPS_ENV = 'staging'
-        IBM_CLOUD_DEVOPS_API_KEY = credentials('API_KEY')
+      //  IBM_CLOUD_DEVOPS_ENV = 'staging'
+        IBM_CLOUD_DEVOPS_API_KEY = credentials('API_KEY_PROD')
         IBM_CLOUD_DEVOPS_ORG = 'fuse@jp.ibm.com'
         IBM_CLOUD_DEVOPS_APP_NAME = 'WheatherApp-20181011GVTアプリ①'
-        IBM_CLOUD_DEVOPS_TOOLCHAIN_ID = 'b363c461-8b0c-4370-856e-a1ae5801d5ca'
-        IBM_CLOUD_DEVOPS_WEBHOOK_URL = 'https://jenkins:2a70b0ff-05ea-4ad6-81c7-817271177a09:dcc9fd39-2cac-4caf-b8c9-edc070dd6b1b@devops-api-integration.stage1.ng.bluemix.net/v1/toolint/messaging/webhook/publish'
+        IBM_CLOUD_DEVOPS_TOOLCHAIN_ID = '07d8353c-20a2-474a-9614-9c39a195952e'
+        IBM_CLOUD_DEVOPS_WEBHOOK_URL = 'https://jenkins:30ebc25c-03a9-4baf-9987-fa4f270b72c9:6d9c8d94-2758-44a7-9739-9ba2cd33bb89@devops-api.ng.bluemix.net/v1/toolint/messaging/webhook/publish'
     }
     tools {
        nodejs 'recent'
@@ -62,7 +62,7 @@ pipeline {
         }
                stage('SCM') {
             steps {
-                git 'https://github.com/mfuse/devopsinsights-toolchain-20181011GVT.git'
+                git 'https://github.com/mfuse/devopsinsights-toolchain-20181030GVT-prod.git'
             }
         }
         stage ('SonarQube analysis') {
@@ -75,7 +75,7 @@ pipeline {
 
                         env.SQ_HOSTNAME = SONAR_HOST_URL;
                         env.SQ_AUTHENTICATION_TOKEN = SONAR_AUTH_TOKEN;
-                        env.SQ_PROJECT_KEY = "devopsinsights-toolchain-20181011GVT";
+                        env.SQ_PROJECT_KEY = "devopsinsights-toolchain-20181030GVT-prod";
                        
 
                       sh "${scannerHome}/bin/sonar-scanner \
@@ -120,13 +120,13 @@ pipeline {
                 // Push the Weather App to Bluemix, staging space
                 sh '''
                         echo "CF ログイン..."
-                        cf api https://api.stage1.ng.bluemix.net
+                        cf api https://api.ng.bluemix.net
                      #  cf login -u $IBM_CLOUD_DEVOPS_CREDS_USR -p $IBM_CLOUD_DEVOPS_CREDS_PSW -o $IBM_CLOUD_DEVOPS_ORG -s ステージング
                         cf login -u apikey -p $IBM_CLOUD_DEVOPS_API_KEY -o $IBM_CLOUD_DEVOPS_ORG -s ステージング
                         
                         echo "デプロイ中...."
                      #  export CF_APP_NAME="staging-$IBM_CLOUD_DEVOPS_APP_NAME"
-                        export CF_APP_NAME="staging-gvt20181025"                  
+                        export CF_APP_NAME="staging-gvt20181030"                  
                         cf delete $CF_APP_NAME -f
                         cf push $CF_APP_NAME -n $CF_APP_NAME -m 64M -i 1
 
@@ -140,7 +140,7 @@ pipeline {
             post {
                 success {
             //        publishDeployRecord environment: "STAGING", appUrl: "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net", result:"SUCCESS"
-                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-gvt20181025.stage1.mybluemix.net", result:"SUCCESS"
+                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-gvt20181030.mybluemix.net", result:"SUCCESS"
                     // use "notifyOTC" method to notify otc of stage status
 //                  notifyOTC stageName: "ステージングにデプロイ", status: "SUCCESS"
 //                  notifyOTC stageName: "ステージングにデプロイ", status: "成功 😊"
@@ -148,7 +148,7 @@ pipeline {
                 }
                 failure {
                //     publishDeployRecord environment: "STAGING", appUrl: "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net", result:"FAIL"
-                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-gvt20181025.stage1.mybluemix.net", result:"FAIL"
+                    publishDeployRecord environment: "STAGING", appUrl: "http://staging-gvt20181030.mybluemix.net", result:"FAIL"
                     
                     // use "notifyOTC" method to notify otc of stage status
             //      notifyOTC stageName: "ステージングにデプロイ", status: "FAIL"
@@ -160,7 +160,7 @@ pipeline {
             //set the APP_URL as the environment variable for the fvt 
             environment {
               //  APP_URL = "http://staging-${IBM_CLOUD_DEVOPS_APP_NAME}.stage1.mybluemix.net"
-                APP_URL = "http://staging-gvt20181025.stage1.mybluemix.net"
+                APP_URL = "http://staging-gvt20181030.mybluemix.net"
             }
             steps {
                 sh 'grunt fvt-test --no-color -f'
@@ -184,7 +184,7 @@ pipeline {
                 // Push the Weather App to Bluemix, production space
                 sh '''
                         echo "CF ログイン..."
-                        cf api https://api.stage1.ng.bluemix.net
+                        cf api https://api.ng.bluemix.net
                       # cf login -u $IBM_CLOUD_DEVOPS_CREDS_USR -p $IBM_CLOUD_DEVOPS_CREDS_PSW -o $IBM_CLOUD_DEVOPS_ORG -s 実稼働
                         cf login -u apikey -p $IBM_CLOUD_DEVOPS_API_KEY -o $IBM_CLOUD_DEVOPS_ORG -s 実稼働
 
